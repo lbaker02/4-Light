@@ -1,0 +1,16 @@
+import RPi.GPIO as GPIO
+import datetime
+
+# List of BCM GPIO pins
+ir_pins = [13, 7, 27, 3]  # Corresponding to physical pins 33, 26, 13, 5
+
+def turn_off_ir(pin):
+    print(f"Turn IR OFF (GPIO {pin})", datetime.datetime.now())
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.HIGH)  # HIGH to turn IR OFF
+
+# Turn off all IR LEDs
+for pin in ir_pins:
+    turn_off_ir(pin)
