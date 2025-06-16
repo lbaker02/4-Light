@@ -1,0 +1,17 @@
+import RPi.GPIO as GPIO
+import datetime
+
+# GPIO numbers for physical pins 40, 29, 19, 10
+led_pins = [21, 5, 10, 15]
+
+# Print timestamp
+print("Turning all IR LEDs ON:", datetime.datetime.now())
+
+# GPIO setup
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+# Set each pin as output and turn LED ON
+for pin in led_pins:
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.HIGH)
