@@ -1,0 +1,12 @@
+import RPi.GPIO as GPIO
+import datetime
+
+def turn_on_ir(pin):
+    print("Turn IR ON ", datetime.datetime.now())
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)
+
+pin = 24
+turn_on_ir(pin)
