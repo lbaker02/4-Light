@@ -1,0 +1,17 @@
+import RPi.GPIO as GPIO
+import datetime
+
+# Define GPIO pins for the 4 IR LEDs
+led_pins = [21, 5, 10, 15]
+
+# Print timestamp
+print("Turning all IR LEDs OFF:", datetime.datetime.now())
+
+# GPIO setup
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+# Set up each pin as output
+for pin in led_pins:
+    GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, GPIO.LOW)  # Turn LED OFF
