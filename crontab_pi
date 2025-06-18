@@ -1,4 +1,4 @@
-30 07 * * * python /home/light4/IR_OFF.py   >> /home/light4/ir_off.log 2>&1 &
-30 19 * * * python /home/light4/IR_ON.py    >> /home/light4/ir_on.log 2>&1 &
-30 07 * * * python /home/light4/LED_ON.py   >> /home/light4/led_on.log 2>&1 &
-30 19 * * * python /home/light4/LED_OFF.py  >> /home/light4/led_off.log 2>&1 &
+30 07 * * * /usr/bin/python3 /home/light4/IR_OFF.py >> /home/light4/ir_off.log 2>&1
+30 19 * * * /usr/bin/python3 /home/light4/IR_ON.py >> /home/light4/ir_on.log 2>&1
+30 07 * * * /usr/bin/python3 /home/light4/LED_ON.py >> /home/light4/led_on.log 2>&1
+30 19 * * * /usr/bin/python3 /home/light4/LED_OFF.py >> /home/light4/led_off.log 2>&1
