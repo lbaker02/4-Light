@@ -1,46 +1,46 @@
-import RPi.GPIO as GPIO
 import time
+import board
+from adafruit_motorkit import MotorKit
+from adafruit_motor import stepper
 import random
-
-# Use Broadcom pin numbering
-GPIO.setmode(GPIO.BCM)
-
-# Define GPIO pins
-DIR_PIN = 3     # Direction pin
-STEP_PIN = 20   # Step pin
-
-# Set up pins
-GPIO.setup(DIR_PIN, GPIO.OUT)
-GPIO.setup(STEP_PIN, GPIO.OUT)
-
-def run_stepper_motor(steps, direction=True, speed=0.01):
-    # Set direction
-    GPIO.output(DIR_PIN, GPIO.HIGH if direction else GPIO.LOW)
-    
-    # Pulse the step pin for each step
+from datetime import datetime
+# Initialize the MotorKit object
+kit = MotorKit()
+# Define the stepper motor
+stepper_motor = kit.stepper1
+# Function to run the stepper motor
+def run_stepper_motor(steps, direction=stepper.FORWARD, speed=0.01):
     for _ in range(steps):
-        GPIO.output(STEP_PIN, GPIO.HIGH)
-        time.sleep(speed / 2)  # Half-period for high
-        GPIO.output(STEP_PIN, GPIO.LOW)
-        time.sleep(speed / 2)  # Half-period for low
-
-# Main loop
+        stepper_motor.onestep(direction=direction, style=stepper.INTERLEAVE)
+        time.sleep(speed)
+# Main loop with alternating direction and random intervals
 try:
-    flip_direction = True  # True = forward, False = backward
-    step_increment = 1 / 16  # Microstepping scaling
-
+    flip_direction = stepper.FORWARD
+    step_increment = 1/16 #  1 #1/16  # step size of 1/16
     while True:
-        # Number of steps for each movement (scale as needed)
-        steps = int(step_increment * 10000)
+        now = datetime.now()
+        current_hour = now.hour
+        if current_hour < 10 or current_hour >=16:
+            print(f"Outside 10am to 4pm exiting at{now}.")
+            break
+        # Number of steps for each movement (rounded to integer)
+        steps = int(step_increment * 10000)  # Scale up for the desired step size
         run_stepper_motor(steps, direction=flip_direction, speed=0.015)
-
-        # Flip direction
-        flip_direction = not flip_direction
-
-        # Random delay
+        stepper_motor.release()
+        # Flip direction for the next iteration
+        flip_direction = stepper.BACKWARD if flip_direction == stepper.FORWARD else stepper.FORWARD
+        # Random sleep interval between 20 and 30 seconds
+        #sleep_time = random.uniform(20, 30)
         sleep_time = random.uniform(20, 30)
         print(f"Sleeping for {sleep_time:.2f} seconds...")
         time.sleep(sleep_time)
-
 finally:
-    GPIO.cleanup()  # Reset all GPIO pins
+    # Turn off the stepper motor
+    stepper_motor.release()
+
+
+
+
+
+
+
